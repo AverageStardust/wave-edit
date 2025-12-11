@@ -130,11 +130,11 @@ func setPCM16Sample(sampleData []byte, sample float64) {
 
 func getPCM24Sample(sampleData []byte) float64 {
 	var extendedSampleData [4]byte
-	copy(extendedSampleData[1:4], sampleData)
+	copy(extendedSampleData[0:3], sampleData)
 
 	// sign extend
-	if (extendedSampleData[1] & 0x80) > 0 {
-		extendedSampleData[0] = 0xFF
+	if (extendedSampleData[2] & 0x80) > 0 {
+		extendedSampleData[3] = 0xFF
 	}
 
 	sampleInt := int32(binary.LittleEndian.Uint32(extendedSampleData[:]))
@@ -147,7 +147,7 @@ func setPCM24Sample(sampleData []byte, sample float64) {
 	var extendedSampleData [4]byte
 	binary.LittleEndian.PutUint32(extendedSampleData[:], uint32(int32(clampedSample)))
 
-	copy(sampleData, extendedSampleData[1:4])
+	copy(sampleData, extendedSampleData[0:3])
 }
 
 func getPCM32Sample(sampleData []byte) float64 {

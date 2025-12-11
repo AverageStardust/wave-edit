@@ -55,15 +55,11 @@ func handleFile(_ fyne.Position, uris []fyne.URI) {
 }
 
 func handleWave(wave *wave.WaveFile) {
-	processingDialog := dialog.NewInformation("Processing", "Let me cook...", mainWindow)
+	processingDialog := dialog.NewInformation("Processing", "Working...", mainWindow)
 	processingDialog.Show()
 
 	go func() {
-		err := wave.MapAllSamples(mapSound)
-		if err != nil {
-			dialog.NewError(err, mainWindow).Show()
-			return
-		}
+		effect(wave, 16, 16)
 
 		fyne.Do(func() {
 			processingDialog.Dismiss()
@@ -82,4 +78,16 @@ func handleWave(wave *wave.WaveFile) {
 			}, mainWindow).Show()
 		})
 	}()
+}
+
+func effect(wave *wave.WaveFile, startBeat, beatLength float64) {
+	secondsPerBeat := 60.0 / 125.0 // 125 bpm
+	err := applyEffect(wave, startBeat*secondsPerBeat, (startBeat+beatLength)*secondsPerBeat, secondsPerBeat)
+
+	if err != nil {
+		fyne.Do(func() {
+			dialog.NewError(err, mainWindow).Show()
+		})
+		return
+	}
 }
