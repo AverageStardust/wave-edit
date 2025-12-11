@@ -59,7 +59,11 @@ func handleWave(wave *wave.WaveFile) {
 	processingDialog.Show()
 
 	go func() {
-		effect(wave, 16, 16)
+		effect(wave, 40*4, 16)
+		effect(wave, 48*4, 8)
+		effect(wave, 58*4, 16)
+		effect(wave, 70*4, 24)
+		effect(wave, 88*4, 8)
 
 		fyne.Do(func() {
 			processingDialog.Dismiss()

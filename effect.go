@@ -79,6 +79,13 @@ func repeatEffect(samples []float64, location, width, beat uint32) float64 {
 
 	// repeat the last two beats of sound over and over
 	y := lastTwoBeats + location%twoBeats
+	
+	// I don't want to talk about it...
+	if samples[y] == samples[y-1] && samples[y] == samples[y-1] && samples[y] == samples[y-2] {
+		return samples[location]
+	}
+	
+	// return the repeating sample
 	return samples[y]
 }
 
